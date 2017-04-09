@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import ProjectService from "../services/project.service";
-const NewProjectView = require('./newProject.html');
+const NewProjectView = require('../views/newProject.html');
 
 @Component({ selector: 'newProject', template: NewProjectView })
 export default class NewProjectComponent {

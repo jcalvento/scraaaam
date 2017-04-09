@@ -20,7 +20,7 @@ export default class ProjectService {
   }
 
   create(project) {
-    this.http.post("/projects", JSON.stringify(project), { headers:{'Content-Type': 'application/json'} })
+    this.http.post("/project", JSON.stringify(project), { headers:{'Content-Type': 'application/json'} })
       .toPromise()
       .then(response => this._addProject(project))
       .catch(err => console.log(err))

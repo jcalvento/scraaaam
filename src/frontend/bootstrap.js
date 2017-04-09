@@ -11,11 +11,11 @@ import { HttpModule } from '@angular/http'
 
 import AppComponent from './app/components/app.component'
 import NewProjectComponent from './app/components/newProject.component'
+import ProjectSelectionComponent from './app/components/projectSelection.component'
 
 @NgModule({
   imports: [ NgbModule.forRoot(), BrowserModule, FormsModule, HttpModule ],
-  styleUrls: ['./style.css'],
-  declarations: [ AppComponent, NewProjectComponent ],
+  declarations: [ AppComponent, NewProjectComponent, ProjectSelectionComponent ],
   bootstrap: [ AppComponent ]
 })
 class AppModule { }
