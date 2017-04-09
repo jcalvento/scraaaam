@@ -1,16 +1,24 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-const newProjectView = require('./newProject.html');
+import ProjectService from "../services/project.service";
+const NewProjectView = require('./newProject.html');
 
-@Component({ selector: 'newProject', template: newProjectView })
+@Component({ selector: 'newProject', template: NewProjectView })
 export default class NewProjectComponent {
-  constructor(modalService) {
-    this.modalService = modalService
+  constructor(modalService, projectService) {
+    this.data = {};
+    this.modalService = modalService;
+    this.projectService = projectService
   }
 
   open(content) {
     this.modalService.open(content)
   }
+
+  onSubmit() {
+    this.projectService.create(this.data);
+    this.data = {}
+  }
 }
 
-NewProjectComponent.parameters = [NgbModal];
+NewProjectComponent.parameters = [NgbModal, ProjectService];

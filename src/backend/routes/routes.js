@@ -7,7 +7,7 @@ let router = express.Router();
 // Express routes
 router.get('/projects', (req, res, next) => {
   Project.find()
-    .then(project => res.json(projects))
+    .then(projects => res.json(projects))
     .catch(next)
 });
 
