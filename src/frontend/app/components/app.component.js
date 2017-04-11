@@ -1,11 +1,12 @@
 import { Component } from '@angular/core'
 import ProjectService from "../services/project.service";
-const AppView = require('../views/app.html');
+import AppView from "../views/app.html";
 
-@Component({ selector: 'app-view', template: AppView, providers: [ProjectService], styleUrls: ['../../assets/styles.css'] })
+@Component({ selector: 'app-view', template: AppView, providers: [ProjectService], styleUrls: ['../../assets/app.component.css'] })
 export default class AppComponent {
-  constructor() {
-    this.name = 'Scraaaam'
+  constructor(projectService) {
+    this.name = 'Scraaaam';
+    this.projects = projectService.projects
   }
 }
 

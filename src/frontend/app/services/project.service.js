@@ -7,7 +7,7 @@ export default class ProjectService {
     this.http = http;
     this._projects = [];
     this.http.get("/projects").toPromise()
-      .then(response => this._addProject(...response.json()))
+      .then(response => this._projects.push(...response.json()))
       .catch(err => console.log(err))
   }
 
@@ -22,8 +22,23 @@ export default class ProjectService {
   create(project) {
     this.http.post("/project", JSON.stringify(project), { headers:{'Content-Type': 'application/json'} })
       .toPromise()
-      .then(response => this._addProject(project))
+      .then(response => this._addProject(response.json()))
       .catch(err => console.log(err))
+  }
+
+  selectProject(projectId) {
+    this.http.put(`/projects/${projectId}/select`).toPromise()
+      .then(response => {
+        const data = response.json();
+        this._updateProject(data);
+
+        return data
+      })
+  }
+
+  _updateProject(projectData) {
+    const project = this._projects.find(project => project._id === projectData._id);
+    project.selected = projectData.selected;
   }
 }
 
