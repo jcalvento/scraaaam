@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const milestoneSchema = new mongoose.Schema({
   name: String,
-  selected: { type: Boolean, default: false }
+  project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' }
 });
 
 const Milestone = mongoose.model('Milestone', milestoneSchema);
