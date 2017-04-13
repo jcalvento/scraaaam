@@ -6,7 +6,6 @@ const ProjectSelectionView = require('../views/projectSelection.html');
 export default class ProjectSelectionComponent {
   constructor(projectService) {
     this.projectService = projectService;
-    this.projects = this.projectService.projects;
   }
 
   onInput(selectedProject) {

@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col">
-        <h1>{{project.name}}</h1>
+        <h1>{{projectService.selectedProject?.name}}</h1>
     </div>
 </div>
 <div>
     <newMilestone></newMilestone>
     <ul>
-        <li *ngFor="let milestone of project.milestones">{{milestone.name}}</li>
+        <li *ngFor="let milestone of projectService.selectedProject?.milestones">{{milestone.name}}</li>
     </ul>
 </div>

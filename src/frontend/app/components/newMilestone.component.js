@@ -12,13 +12,13 @@ export default class NewMilestoneComponent {
   }
 
   open(content) {
-    this.modalService.open(content)
+    this.currentModal = this.modalService.open(content)
   }
 
   onSubmit() {
     this.projectService.createMilestone(this.data);
     this.data = {};
-    this.modalService.close()
+    this.currentModal.close()
   }
 }
 
