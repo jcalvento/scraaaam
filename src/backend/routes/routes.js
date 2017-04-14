@@ -19,7 +19,7 @@ router.param('project', (req, res, next, value) => {
 
 // Express routes
 router.get('/projects', (req, res, next) => {
-  Project.find()
+  Project.find().populate('milestones')
     .then(projects => res.json(projects))
     .catch(next)
 });
@@ -44,10 +44,19 @@ router.put('/projects/:project/select', (req, res, next) => {
 
 router.post('/project/:project/milestone', (req, res, next) => {
   const milestone = new Milestone(req.body);
-  milestone.project = req.project;
+  let project = req.project;
+  milestone.project = project;
 
   milestone.save()
-    .then(milestone => res.json(milestone))
+    .then(newMilestone => {
+      project.milestones.push(newMilestone);
+
+      project.save()
+        .then(updatedProject => res.json(newMilestone))
+        .catch(next);
+
+      res.json(milestone)
+    })
     .catch(next)
 });
 

@@ -12,12 +12,13 @@ export default class NewProjectComponent {
   }
 
   open(content) {
-    this.modalService.open(content)
+    this.currentModal = this.modalService.open(content)
   }
 
   onSubmit() {
     this.projectService.create(this.data);
-    this.data = {}
+    this.data = {};
+    this.currentModal.close()
   }
 }
 
