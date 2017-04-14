@@ -6,7 +6,19 @@ import AppView from "../views/app.html";
 export default class AppComponent {
   constructor(projectService) {
     this.name = 'Scraaaam';
-    this.projects = projectService.projects
+    this.projectService = projectService;
+    projectService.projects().then((projects) => { 
+      this.projects = projects;
+      this.selectedProject = this.projects[0]; 
+    })
+  }
+
+  onInput(selectedProject) {
+    this.selectedProject = selectedProject;
+  }
+
+  isSelectedProject(project) {
+    project._id === this.selectedProject._id;
   }
 }
 

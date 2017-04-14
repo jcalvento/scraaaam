@@ -19,7 +19,7 @@ router.param('project', (req, res, next, value) => {
 
 // Express routes
 router.get('/projects', (req, res, next) => {
-  Project.find().populate('milestones')
+  Project.find().populate('milestones epics')
     .then(projects => res.json(projects))
     .catch(next)
 });
@@ -33,8 +33,6 @@ router.post('/project', (req, res, next) => {
 });
 
 router.put('/projects/:project/select', (req, res, next) => {
-  Project.update({selected: true}, {selected: false}, {multi: true}).exec();
-
   const project = req.project;
   project.select();
   project.save()
