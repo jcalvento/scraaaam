@@ -7,23 +7,23 @@ export default class ProjectService {
     this.http = http;
     this._projects = [];
     this.http.get("/projects").toPromise()
-      .then(response => this._projects.push(...response.json()))
+      .then(response => {
+        this._projects.push(...response.json());
+        this._selectedProject = this.projects.find(project => project.selected)
+      })
       .catch(err => console.log(err))
-  }
-
-  _addProject(project) {
-    return this._projects.push(project);
   }
 
   get projects() {
     return this._projects
   }
 
+  get selectedProject() {
+    return this._selectedProject
+  }
+
   create(project) {
-    this.http.post("/project", JSON.stringify(project), { headers:{'Content-Type': 'application/json'} })
-      .toPromise()
-      .then(response => this._addProject(response.json()))
-      .catch(err => console.log(err))
+    this._post('/project', project, (response) => this._addProject(response.json()))
   }
 
   selectProject(projectId) {
@@ -36,9 +36,32 @@ export default class ProjectService {
       })
   }
 
+   createMilestone(milestone) {
+     this._post(`/project/${this.selectedProject._id}/milestone`, milestone, (response) => {
+       this._addMilestone(response.json())
+     })
+   }
+
+  // Private methods
+  _post(path, objectData, thenCallback) {
+    this.http.post(path, JSON.stringify(objectData), { headers:{'Content-Type': 'application/json'} })
+      .toPromise()
+      .then(thenCallback)
+      .catch(err => console.log(err))
+  }
+
+  _addMilestone(milestone) {
+    this.selectedProject.milestones.push(milestone)
+  }
+
+  _addProject(project) {
+    return this._projects.push(project)
+  }
+
   _updateProject(projectData) {
     const project = this._projects.find(project => project._id === projectData._id);
     project.selected = projectData.selected;
+    this._selectedProject = project
   }
 }
 

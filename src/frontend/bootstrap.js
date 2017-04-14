@@ -12,10 +12,14 @@ import { HttpModule } from '@angular/http'
 import AppComponent from './app/components/app.component'
 import NewProjectComponent from './app/components/newProject.component'
 import ProjectSelectionComponent from './app/components/projectSelection.component'
+import NewMilestoneComponent from "./app/components/newMilestone.component";
+import ProjectComponent from "./app/components/project.component";
 
 @NgModule({
   imports: [ NgbModule.forRoot(), BrowserModule, FormsModule, HttpModule ],
-  declarations: [ AppComponent, NewProjectComponent, ProjectSelectionComponent ],
+  declarations: [
+    AppComponent, NewProjectComponent, ProjectSelectionComponent, ProjectComponent, NewMilestoneComponent
+  ],
   bootstrap: [ AppComponent ]
 })
 class AppModule { }

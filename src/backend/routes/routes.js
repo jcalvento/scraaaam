@@ -1,6 +1,7 @@
 import express from 'express'
 
 import Project from '../models/Project.js'
+import Milestone from "../models/Milestone";
 
 let router = express.Router();
 
@@ -18,7 +19,7 @@ router.param('project', (req, res, next, value) => {
 
 // Express routes
 router.get('/projects', (req, res, next) => {
-  Project.find()
+  Project.find().populate('milestones')
     .then(projects => res.json(projects))
     .catch(next)
 });
@@ -39,6 +40,24 @@ router.put('/projects/:project/select', (req, res, next) => {
   project.save()
     .then(updatedProject => res.json(updatedProject))
     .catch(next);
+});
+
+router.post('/project/:project/milestone', (req, res, next) => {
+  const milestone = new Milestone(req.body);
+  let project = req.project;
+  milestone.project = project;
+
+  milestone.save()
+    .then(newMilestone => {
+      project.milestones.push(newMilestone);
+
+      project.save()
+        .then(updatedProject => res.json(newMilestone))
+        .catch(next);
+
+      res.json(milestone)
+    })
+    .catch(next)
 });
 
 export default router

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import ProjectService from "../services/project.service";
-const NewProjectView = require('../views/newProject.html');
+const NewMilestoneView = require('../views/newMilestone.html');
 
-@Component({ selector: 'newProject', template: NewProjectView })
-export default class NewProjectComponent {
+@Component({ selector: 'newMilestone', template: NewMilestoneView })
+export default class NewMilestoneComponent {
   constructor(modalService, projectService) {
     this.data = {};
     this.modalService = modalService;
@@ -16,10 +16,10 @@ export default class NewProjectComponent {
   }
 
   onSubmit() {
-    this.projectService.create(this.data);
+    this.projectService.createMilestone(this.data);
     this.data = {};
     this.currentModal.close()
   }
 }
 
-NewProjectComponent.parameters = [NgbModal, ProjectService];
+NewMilestoneComponent.parameters = [NgbModal, ProjectService];
