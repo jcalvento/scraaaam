@@ -5,14 +5,18 @@
                 <h1>{{name}}</h1>
             </div>
             <div class="col">
-                <select class="form-control" (input)="onInput($event.target.value)">
-                    <option *ngFor="let project of projects" [value]="project._id" [selected]="isSelectedProject(project)">{{project.name}}</option>
-                </select>
+                <div *ngIf="projects.length > 0">
+                    <select class="form-control" (input)="onInput($event.target.value)">
+                        <option *ngFor="let project of projects" [value]="project._id" [selected]="isSelectedProject(project)">{{project.name}}</option>
+                    </select>
+                </div>
             </div>
             <div class="col">
                 <newProject></newProject>
             </div>
         </div>
     </div>
-    <project [project]="selectedProject"></project>
+    <div *ngIf="selectedProject">
+        <project [project]="selectedProject"></project>
+    </div>
 </div>

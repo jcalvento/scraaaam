@@ -1,29 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http'
+import { Http } from '@angular/http';
+import { ReplaySubject } from 'rxjs/ReplaySubject'
 
 @Injectable()
 export default class ProjectService {  
   constructor(http) {
     this.http = http;
-    this._projects = [];
-  }
-
-  projects() {
+    this._projects = (new ReplaySubject(1)).asObservable();
     this.http.get("/projects").toPromise()
-      .then(response => { this._projects.push(...response.json()); })
-      .catch(err => console.log(err))
+      .then(response => { this._projects.next(response.json()); })
+      .catch(err => console.log(err));
   }
 
-  get selectedProject() {
-    return this._selectedProject
-  }
+  get projects() { this._projects; }
 
   create(project) {
     this._post('/project', project, (response) => this._addProject(response.json()))
   }
   
-   createMilestone(milestone) {
-     this._post(`/project/${this.selectedProject._id}/milestone`, milestone, (response) => {
+   createMilestone(project, milestone) {
+     this._post(`/project/${project._id}/milestone`, milestone, (response) => {
        this._addMilestone(response.json())
      })
    }
