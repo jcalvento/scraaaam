@@ -14,11 +14,12 @@ import NewProjectComponent from './app/components/newProject.component'
 import ProjectSelectionComponent from './app/components/projectSelection.component'
 import NewMilestoneComponent from "./app/components/newMilestone.component";
 import ProjectComponent from "./app/components/project.component";
+import NewEpicComponent from "./app/components/newEpic.component";
 
 @NgModule({
   imports: [ NgbModule.forRoot(), BrowserModule, FormsModule, HttpModule ],
   declarations: [
-    AppComponent, NewProjectComponent, ProjectSelectionComponent, ProjectComponent, NewMilestoneComponent
+    AppComponent, NewProjectComponent, ProjectSelectionComponent, ProjectComponent, NewMilestoneComponent, NewEpicComponent
   ],
   bootstrap: [ AppComponent ]
 })

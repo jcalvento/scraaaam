@@ -32,14 +32,6 @@ router.post('/project', (req, res, next) => {
     .catch(next)
 });
 
-router.put('/projects/:project/select', (req, res, next) => {
-  const project = req.project;
-  project.select();
-  project.save()
-    .then(updatedProject => res.json(updatedProject))
-    .catch(next);
-});
-
 router.post('/project/:project/milestone', (req, res, next) => {
   const milestone = new Milestone(req.body);
   let project = req.project;

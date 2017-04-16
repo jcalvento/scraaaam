@@ -8,8 +8,23 @@ export default class ProjectSelectionComponent {
     this.projectService = projectService;
   }
 
-  onInput(selectedProject) {
-    this.projectService.selectProject(selectedProject);
+  isSelected(project) {
+    project._id === this.selectedProject._id;
+  }
+
+  onInput(selectedProjectId) {
+    let newSelectedProject = this.projects.find((project) => project._id === selectedProjectId)
+    
+    this.projectService.selectProject(newSelectedProject);
+  }
+
+  ngOnInit() {
+    this.projectSub = this.projectService.projects.subscribe((projects) => this.projects = projects)
+    this.selectedProjectSub = this.projectService.selectedProject.subscribe((project) => this.selectedProject = project)
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
 

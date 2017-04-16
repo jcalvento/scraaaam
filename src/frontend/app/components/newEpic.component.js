@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import ProjectService from "../services/project.service";
-const NewProjectView = require('../views/newProject.html');
+const newEpicView = require('../views/newEpic.html');
 
-@Component({ selector: 'newProject', template: NewProjectView })
-export default class NewProjectComponent {
+@Component({ selector: 'newEpic', template: newEpicView })
+export default class NewEpicComponent {
   constructor(modalService, projectService) {
     this.data = {};
     this.modalService = modalService;
@@ -16,10 +16,10 @@ export default class NewProjectComponent {
   }
 
   onSubmit() {
-    this.projectService.createProject(this.data);
+    this.projectService.createEpic(this.data);
     this.data = {};
     this.currentModal.close()
   }
 }
 
-NewProjectComponent.parameters = [NgbModal, ProjectService];
+NewMilestoneComponent.parameters = [NgbModal, ProjectService];
