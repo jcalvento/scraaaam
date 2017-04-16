@@ -2,6 +2,7 @@ import express from 'express'
 
 import Project from '../models/Project.js'
 import Milestone from "../models/Milestone";
+import Epic from "../models/Epic";
 
 let router = express.Router();
 
@@ -16,6 +17,25 @@ router.param('project', (req, res, next, value) => {
     })
     .catch(next)
 });
+
+router.param('milestone', (req, res, next, value) => {
+  _findRecord(req, res, next, value, Milestone)
+});
+
+function _findRecord(req, res, next, value, record) {
+  const modelName = record.modelName;
+  console.log(modelName);
+  record.findById(value)
+    .then(recordInstance => {
+      if (!recordInstance) {
+        throw new Error(`${modelName} not found ${value}`)
+      }
+      req[modelName.toLowerCase()] = recordInstance;
+      console.log(recordInstance);
+      next()
+    })
+    .catch(next)
+}
 
 // Express routes
 router.get('/projects', (req, res, next) => {
@@ -46,6 +66,24 @@ router.post('/project/:project/milestone', (req, res, next) => {
         .catch(next);
 
       res.json(milestone)
+    })
+    .catch(next)
+});
+
+router.post('/milestone/:milestone/epic', (req, res, next) => {
+  const epic = new Epic(req.body);
+  let milestone = req.milestone;
+  epic.milestone = milestone;
+
+  epic.save()
+    .then(newEpic => {
+      milestone.epics.push(newEpic);
+
+      milestone.save()
+        .then(_ => res.json(newEpic))
+        .catch(next);
+
+      res.json(epic)
     })
     .catch(next)
 });

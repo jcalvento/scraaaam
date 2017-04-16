@@ -5,10 +5,10 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 @Injectable()
 export default class ProjectService {  
   constructor(http) {
-    this.http = http
-    this._projects = new BehaviorSubject([])
-    this._selectedProject = new BehaviorSubject({})
-    this._selectedMilestone = new BehaviorSubject({})
+    this.http = http;
+    this._projects = new BehaviorSubject([]);
+    this._selectedProject = new BehaviorSubject({});
+    this._selectedMilestone = new BehaviorSubject({});
 
     this._loadInitialData()
   }
@@ -24,15 +24,21 @@ export default class ProjectService {
   selectProject(project) { this._selectedProject.next(project) }
   
   createMilestone(milestone) {
-    let project = this._selectedProject.getValue()
+    let project = this._selectedProject.getValue();
     this._post(`/project/${project._id}/milestone`, milestone, (response) => {
-      let project = this._selectedProject.getValue()
-      project.milestones.push(response.json())
+      let project = this._selectedProject.getValue();
+      project.milestones.push(response.json());
       this._selectedProject.next(project)
     })
   }
 
   selectMilestone(milestone) { this._selectedMilestone.next(milestone) }
+
+  createEpic(epic) {
+    this._post(`/milestone/${this._selectedMilestone.getValue()._id}/epic`, epic, (response) =>{
+      this._concatToSubject(this._selectedMilestone.epics, response.json())
+    })
+  }
 
   // Private methods
   _post(path, objectData, thenCallback) {
@@ -43,19 +49,22 @@ export default class ProjectService {
   }
 
   _concatToSubject(subject, newElements) {
-    debugger
     return subject.next(subject.getValue().push(newElements))
   }
 
   _loadInitialData() {
     this.http.get("/projects").toPromise()
       .then(response => { 
-        this._projects.next(response.json())
-        this._selectedProject.next(this._projects.getValue()[0])
-        this._selectedMilestone.next(this._selectedProject.getValue()[0])
+        this._projects.next(response.json());
+        if(this._projects.getValue().length > 0) {
+          this._selectedProject.next(this._projects.getValue()[0]);
+        }
+        if(this._selectedProject) {
+          this._selectedMilestone.next(this._selectedProject.getValue()[0])
+        }
       })
       .catch(err => console.log(err))
   }
 }
 
-ProjectService.parameters = [Http]
+ProjectService.parameters = [Http];

@@ -5,7 +5,9 @@
 </div>
 <div>
     <ul>
-        <li *ngFor="let milestone of project?.milestones" (click)="selectMilestone(milestone)">{{milestone.name}}</li>
+        <li *ngFor="let milestone of project?.milestones" (click)="selectMilestone(milestone)" style="cursor: pointer">
+            {{milestone.name}}
+        </li>
     </ul>
     <newMilestone></newMilestone>
 </div>
@@ -13,4 +15,5 @@
     <ul>
         <li *ngFor="let epic of selectedMilestone?.epics">{{epic.name}}</li>
     </ul>
+    <newEpic></newEpic>
 </div>

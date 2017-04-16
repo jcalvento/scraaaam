@@ -22,4 +22,4 @@ export default class NewEpicComponent {
   }
 }
 
-NewMilestoneComponent.parameters = [NgbModal, ProjectService];
+NewEpicComponent.parameters = [NgbModal, ProjectService];
