@@ -35,8 +35,10 @@ export default class ProjectService {
   selectMilestone(milestone) { this._selectedMilestone.next(milestone) }
 
   createEpic(epic) {
-    this._post(`/milestone/${this._selectedMilestone.getValue()._id}/epic`, epic, (response) =>{
-      this._concatToSubject(this._selectedMilestone.epics, response.json())
+    let selectedMilestone = this._selectedMilestone.getValue()
+    this._post(`/milestone/${selectedMilestone._id}/epic`, epic, (response) =>{
+      selectedMilestone.epics.push(response.json())
+      this._selectedMilestone.next(selectedMilestone)
     })
   }
 
@@ -49,7 +51,9 @@ export default class ProjectService {
   }
 
   _concatToSubject(subject, newElements) {
-    return subject.next(subject.getValue().push(newElements))
+    let existingElements = subject.getValue()
+    existingElements.push(newElements)
+    return subject.next(existingElements)
   }
 
   _loadInitialData() {
@@ -57,10 +61,9 @@ export default class ProjectService {
       .then(response => { 
         this._projects.next(response.json());
         if(this._projects.getValue().length > 0) {
-          this._selectedProject.next(this._projects.getValue()[0]);
-        }
-        if(this._selectedProject) {
-          this._selectedMilestone.next(this._selectedProject.getValue()[0])
+          let selectedProject = this._projects.getValue()[0]
+          this._selectedProject.next(selectedProject);
+          this._selectedMilestone.next(selectedProject.milestones[0])
         }
       })
       .catch(err => console.log(err))

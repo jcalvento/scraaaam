@@ -11,6 +11,12 @@
     </ul>
     <newMilestone></newMilestone>
 </div>
+
+<div class="row">
+    <div class="col">
+        <h1>{{selectedMilestone?.name}}</h1>
+    </div>
+</div>
 <div>
     <ul>
         <li *ngFor="let epic of selectedMilestone?.epics">{{epic.name}}</li>

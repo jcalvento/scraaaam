@@ -24,7 +24,8 @@ export default class ProjectSelectionComponent {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.projectSub.unsubscribe();
+    this.selectedProjectSub.unsubscribe();
   }
 }
 

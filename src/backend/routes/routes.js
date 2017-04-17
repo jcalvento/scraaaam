@@ -39,7 +39,7 @@ function _findRecord(req, res, next, value, record) {
 
 // Express routes
 router.get('/projects', (req, res, next) => {
-  Project.find().populate('milestones epics')
+  Project.find().populate({ path:'milestones', model: 'Milestone', populate: { path: 'epics', model: 'Epic'}})
     .then(projects => res.json(projects))
     .catch(next)
 });

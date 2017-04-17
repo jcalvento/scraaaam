@@ -15,7 +15,7 @@ export default class ProjectComponent {
 
   ngOnInit() {
     this.projectSub = this.projectService.selectedProject.subscribe((project) => this.project = project)
-    this.milestoneSub = this.projectService.selectedMilestone.subscribe((milestone) => this.selectedMilestone = milestone)
+    this.milestoneSub = this.projectService.selectedMilestone.subscribe((milestone) => { this.selectedMilestone = milestone })
   }
 
   ngOnDestroy() {
