@@ -1,5 +1,5 @@
-<div *ngIf="projects.length > 0">
+<div *ngIf="projects">
     <select class="form-control" (input)="onInput($event.target.value)">
-        <option *ngFor="let project of projects" [value]="project._id" [selected]="project.selected">{{project.name}}</option>
+        <option *ngFor="let project of projects" [value]="project._id" [selected]="isSelected(project)">{{project.name}}</option>
     </select>
 </div>

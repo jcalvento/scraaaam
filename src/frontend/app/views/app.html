@@ -5,12 +5,13 @@
                 <h1>{{name}}</h1>
             </div>
             <div class="col">
-                <projectSelection [projects]="projects"></projectSelection>
+                <projectSelection></projectSelection>
             </div>
             <div class="col">
                 <newProject></newProject>
             </div>
         </div>
     </div>
-    <project></project>
+    <hr>
+    <router-outlet></router-outlet>
 </div>

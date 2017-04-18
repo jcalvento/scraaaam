@@ -1,46 +1,46 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 import { Http } from '@angular/http'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
 @Injectable()
-export default class ProjectService {
+export default class ProjectService {  
   constructor(http) {
     this.http = http;
-    this._projects = [];
-    this.http.get("/projects").toPromise()
-      .then(response => {
-        this._projects.push(...response.json());
-        this._selectedProject = this.projects.find(project => project.selected)
-      })
-      .catch(err => console.log(err))
+    this._projects = new BehaviorSubject([]);
+    this._selectedProject = new BehaviorSubject({});
+    this._selectedMilestone = new BehaviorSubject({});
+
+    this._loadInitialData()
   }
 
-  get projects() {
-    return this._projects
+  get projects() { return this._projects }
+  get selectedProject() { return this._selectedProject }
+  get selectedMilestone() { return this._selectedMilestone }
+
+  createProject(project) {
+    this._post('/project', project, (response) => this._concatToSubject(this._projects, response.json()))
   }
 
-  get selectedProject() {
-    return this._selectedProject
+  selectProject(project) { this._selectedProject.next(project) }
+  
+  createMilestone(milestone) {
+    let project = this._selectedProject.getValue();
+    this._post(`/project/${project._id}/milestone`, milestone, (response) => {
+      let project = this._selectedProject.getValue();
+      project.milestones.push(response.json());
+      this._selectedProject.next(project)
+    })
   }
 
-  create(project) {
-    this._post('/project', project, (response) => this._addProject(response.json()))
+  selectMilestone(milestone) { this._selectedMilestone.next(milestone) }
+
+  createEpic(epic) {
+    let selectedMilestone = this._selectedMilestone.getValue()
+    this._post(`/milestone/${selectedMilestone._id}/epic`, epic, (response) =>{
+      selectedMilestone.epics.push(response.json())
+      this._selectedMilestone.next(selectedMilestone)
+    })
   }
-
-  selectProject(projectId) {
-    this.http.put(`/projects/${projectId}/select`).toPromise()
-      .then(response => {
-        const data = response.json();
-        this._updateProject(data);
-
-        return data
-      })
-  }
-
-   createMilestone(milestone) {
-     this._post(`/project/${this.selectedProject._id}/milestone`, milestone, (response) => {
-       this._addMilestone(response.json())
-     })
-   }
 
   // Private methods
   _post(path, objectData, thenCallback) {
@@ -50,18 +50,23 @@ export default class ProjectService {
       .catch(err => console.log(err))
   }
 
-  _addMilestone(milestone) {
-    this.selectedProject.milestones.push(milestone)
+  _concatToSubject(subject, newElements) {
+    let existingElements = subject.getValue()
+    existingElements.push(newElements)
+    return subject.next(existingElements)
   }
 
-  _addProject(project) {
-    return this._projects.push(project)
-  }
-
-  _updateProject(projectData) {
-    const project = this._projects.find(project => project._id === projectData._id);
-    project.selected = projectData.selected;
-    this._selectedProject = project
+  _loadInitialData() {
+    this.http.get("/projects").toPromise()
+      .then(response => { 
+        this._projects.next(response.json());
+        if(this._projects.getValue().length > 0) {
+          let selectedProject = this._projects.getValue()[0]
+          this._selectedProject.next(selectedProject);
+          this._selectedMilestone.next(selectedProject.milestones[0])
+        }
+      })
+      .catch(err => console.log(err))
   }
 }
 
