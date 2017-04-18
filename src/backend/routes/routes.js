@@ -1,4 +1,5 @@
 import express from 'express'
+import {findRecord, createRecordAssociatedWith} from './routesHelper'
 
 import Project from '../models/Project.js'
 import Milestone from "../models/Milestone";
@@ -9,39 +10,16 @@ import Task from "../models/Task";
 let router = express.Router();
 
 router.param('project', (req, res, next, value) => {
-  Project.findById(value)
-    .then(project => {
-      if (!project) {
-        throw new Error(`Project not found ${value}`)
-      }
-      req.project = project;
-      next()
-    })
-    .catch(next)
+  findRecord(req, res, next, value, Project)
 });
 
 router.param('milestone', (req, res, next, value) => {
-  _findRecord(req, res, next, value, Milestone)
+  findRecord(req, res, next, value, Milestone)
 });
 
 router.param('epic', (req, res, next, value) => {
-  _findRecord(req, res, next, value, Epic)
+  findRecord(req, res, next, value, Epic)
 });
-
-function _findRecord(req, res, next, value, record) {
-  const modelName = record.modelName;
-  console.log(modelName);
-  record.findById(value)
-    .then(recordInstance => {
-      if (!recordInstance) {
-        throw new Error(`${modelName} not found ${value}`)
-      }
-      req[modelName.toLowerCase()] = recordInstance;
-      console.log(recordInstance);
-      next()
-    })
-    .catch(next)
-}
 
 // Express routes
 router.get('/projects', (req, res, next) => {
@@ -59,39 +37,11 @@ router.post('/project', (req, res, next) => {
 });
 
 router.post('/project/:project/milestone', (req, res, next) => {
-  const milestone = new Milestone(req.body);
-  let project = req.project;
-  milestone.project = project;
-
-  milestone.save()
-    .then(newMilestone => {
-      project.milestones.push(newMilestone);
-
-      project.save()
-        .then(updatedProject => res.json(newMilestone))
-        .catch(next);
-
-      res.json(milestone)
-    })
-    .catch(next)
+  createRecordAssociatedWith(req, res, next, Milestone, 'project')
 });
 
 router.post('/milestone/:milestone/epic', (req, res, next) => {
-  const epic = new Epic(req.body);
-  let milestone = req.milestone;
-  epic.milestone = milestone;
-
-  epic.save()
-    .then(newEpic => {
-      milestone.epics.push(newEpic);
-
-      milestone.save()
-        .then(_ => res.json(newEpic))
-        .catch(next);
-        
-      res.json(epic)
-    })
-    .catch(next)
+  createRecordAssociatedWith(req, res, next, Epic, 'milestone')
 });
 
 router.get('/epics/:epic', (req, res, next) => {
@@ -99,39 +49,11 @@ router.get('/epics/:epic', (req, res, next) => {
 });
 
 router.post('/epics/:epic/comment', (req, res, next) => {
-  const comment = new Comment(req.body);
-  let epic = req.epic;
-  comment.epic = epic;
-
-  comment.save()
-    .then(newComment => {
-      epic.comments.push(newComment);
-
-      epic.save()
-        .then(_ => res.json(newComment))
-        .catch(next);
-
-      res.json(comment)
-    })
-    .catch(next)
-})
+  createRecordAssociatedWith(req, res, next, Comment, 'epic')
+});
 
 router.post('/epics/:epic/task', (req, res, next) => {
-  const task = new Task(req.body);
-  let epic = req.epic;
-  task.epic = epic;
-
-  task.save()
-    .then(newTask => {
-      epic.tasks.push(newTask);
-
-      epic.save()
-        .then(_ => res.json(newTask))
-        .catch(next);
-
-      res.json(task)
-    })
-    .catch(next)
-})
+  createRecordAssociatedWith(req, res, next, Task, 'epic')
+});
 
 export default router
