@@ -1,4 +1,5 @@
 import express from 'express'
+import {findRecord, createRecordAssociatedWith} from './routesHelper'
 
 import Project from '../models/Project.js'
 import Milestone from "../models/Milestone";
@@ -9,15 +10,15 @@ import Task from "../models/Task";
 let router = express.Router();
 
 router.param('project', (req, res, next, value) => {
-  _findRecord(req, res, next, value, Project)
+  findRecord(req, res, next, value, Project)
 });
 
 router.param('milestone', (req, res, next, value) => {
-  _findRecord(req, res, next, value, Milestone)
+  findRecord(req, res, next, value, Milestone)
 });
 
 router.param('epic', (req, res, next, value) => {
-  _findRecord(req, res, next, value, Epic)
+  findRecord(req, res, next, value, Epic)
 });
 
 // Express routes
@@ -36,11 +37,11 @@ router.post('/project', (req, res, next) => {
 });
 
 router.post('/project/:project/milestone', (req, res, next) => {
-  _createRecordAssociatedWith(req, res, next, Milestone, 'project')
+  createRecordAssociatedWith(req, res, next, Milestone, 'project')
 });
 
 router.post('/milestone/:milestone/epic', (req, res, next) => {
-  _createRecordAssociatedWith(req, res, next, Epic, 'milestone')
+  createRecordAssociatedWith(req, res, next, Epic, 'milestone')
 });
 
 router.get('/epics/:epic', (req, res, next) => {
@@ -48,46 +49,11 @@ router.get('/epics/:epic', (req, res, next) => {
 });
 
 router.post('/epics/:epic/comment', (req, res, next) => {
-  _createRecordAssociatedWith(req, res, next, Comment, 'epic')
+  createRecordAssociatedWith(req, res, next, Comment, 'epic')
 });
 
 router.post('/epics/:epic/task', (req, res, next) => {
-  _createRecordAssociatedWith(req, res, next, Task, 'epic')
+  createRecordAssociatedWith(req, res, next, Task, 'epic')
 });
 
-// Private Methods
-
-function _findRecord(req, res, next, value, record) {
-  const modelName = record.modelName;
-  console.log(modelName);
-  record.findById(value)
-    .then(recordInstance => {
-      if (!recordInstance) {
-        throw new Error(`${modelName} not found ${value}`)
-      }
-      req[modelName.toLowerCase()] = recordInstance;
-      console.log(recordInstance);
-      next()
-    })
-    .catch(next)
-}
-
-function _createRecordAssociatedWith(req, res, next, recordTable, associationName) {
-  const newRecord = new recordTable(req.body);
-  let association = req[associationName];
-  newRecord[associationName] = association;
-
-  newRecord.save()
-    .then(savedRecord => {
-      const manyRelation = `${recordTable.modelName.toLowerCase()}s`;
-      association[manyRelation].push(savedRecord);
-
-      association.save()
-        .then(_ => res.json(savedRecord))
-        .catch(next);
-
-      res.json(newRecord)
-    })
-    .catch(next)
-}
 export default router
