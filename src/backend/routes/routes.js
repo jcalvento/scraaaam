@@ -4,6 +4,7 @@ import Project from '../models/Project.js'
 import Milestone from "../models/Milestone";
 import Epic from "../models/Epic";
 import Comment from "../models/Comment";
+import Task from "../models/Task";
 
 let router = express.Router();
 
@@ -94,7 +95,7 @@ router.post('/milestone/:milestone/epic', (req, res, next) => {
 });
 
 router.get('/epics/:epic', (req, res, next) => {
-  req.epic.populate('comments').execPopulate().then(epic => res.json(epic)).catch(next);
+  req.epic.populate('comments tasks').execPopulate().then(epic => res.json(epic)).catch(next);
 });
 
 router.post('/epics/:epic/comment', (req, res, next) => {
@@ -111,6 +112,24 @@ router.post('/epics/:epic/comment', (req, res, next) => {
         .catch(next);
 
       res.json(comment)
+    })
+    .catch(next)
+})
+
+router.post('/epics/:epic/task', (req, res, next) => {
+  const task = new Task(req.body);
+  let epic = req.epic;
+  task.epic = epic;
+
+  task.save()
+    .then(newTask => {
+      epic.tasks.push(newTask);
+
+      epic.save()
+        .then(_ => res.json(newTask))
+        .catch(next);
+
+      res.json(task)
     })
     .catch(next)
 })
