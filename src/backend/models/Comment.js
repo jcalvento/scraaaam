@@ -1,9 +1,8 @@
 import mongoose from 'mongoose'
 
 const commentSchema = new mongoose.Schema({
-  name: String,
-  author: String,
   body: String,
+  submitted_at: { type: Date, default: Date.now },
   epic: { type: mongoose.Schema.Types.ObjectId, ref: 'Epic' }
 });
 

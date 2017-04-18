@@ -3,6 +3,7 @@ import express from 'express'
 import Project from '../models/Project.js'
 import Milestone from "../models/Milestone";
 import Epic from "../models/Epic";
+import Comment from "../models/Comment";
 
 let router = express.Router();
 
@@ -20,6 +21,10 @@ router.param('project', (req, res, next, value) => {
 
 router.param('milestone', (req, res, next, value) => {
   _findRecord(req, res, next, value, Milestone)
+});
+
+router.param('epic', (req, res, next, value) => {
+  _findRecord(req, res, next, value, Epic)
 });
 
 function _findRecord(req, res, next, value, record) {
@@ -82,10 +87,32 @@ router.post('/milestone/:milestone/epic', (req, res, next) => {
       milestone.save()
         .then(_ => res.json(newEpic))
         .catch(next);
-
+        
       res.json(epic)
     })
     .catch(next)
 });
+
+router.get('/epics/:epic', (req, res, next) => {
+  req.epic.populate('comments').execPopulate().then(epic => res.json(epic)).catch(next);
+});
+
+router.post('/epics/:epic/comment', (req, res, next) => {
+  const comment = new Comment(req.body);
+  let epic = req.epic;
+  comment.epic = epic;
+
+  comment.save()
+    .then(newComment => {
+      epic.comments.push(newComment);
+
+      epic.save()
+        .then(_ => res.json(newComment))
+        .catch(next);
+
+      res.json(comment)
+    })
+    .catch(next)
+})
 
 export default router

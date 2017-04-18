@@ -19,7 +19,8 @@ export default class ProjectComponent {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.projectSub.unsubscribe();
+    this.milestoneSub.unsubscribe();
   }
 }
 

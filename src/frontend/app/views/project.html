@@ -19,7 +19,7 @@
 </div>
 <div>
     <ul>
-        <li *ngFor="let epic of selectedMilestone?.epics">{{epic.name}}</li>
+        <li *ngFor="let epic of selectedMilestone?.epics" [routerLink]="['/epics', epic._id]">{{epic.name}}</li>
     </ul>
     <newEpic></newEpic>
 </div>

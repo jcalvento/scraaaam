@@ -13,13 +13,24 @@ import AppComponent from './app/components/app.component'
 import NewProjectComponent from './app/components/newProject.component'
 import ProjectSelectionComponent from './app/components/projectSelection.component'
 import NewMilestoneComponent from "./app/components/newMilestone.component";
+import NewCommentComponent from "./app/components/newComment.component";
 import ProjectComponent from "./app/components/project.component";
 import NewEpicComponent from "./app/components/newEpic.component";
+import EpicComponent from "./app/components/epic.component";
+
+import { RouterModule }  from '@angular/router';
+
+let router = RouterModule.forRoot([
+  { path: '', redirectTo: '/projects', pathMatch: 'full' },
+  { path: 'projects', component: ProjectComponent },
+  { path: 'epics/:id', component: EpicComponent }
+], { useHash: true })
 
 @NgModule({
-  imports: [ NgbModule.forRoot(), BrowserModule, FormsModule, HttpModule ],
+  imports: [ router, NgbModule.forRoot(), BrowserModule, FormsModule, HttpModule ],
   declarations: [
-    AppComponent, NewProjectComponent, ProjectSelectionComponent, ProjectComponent, NewMilestoneComponent, NewEpicComponent
+    AppComponent, NewProjectComponent, ProjectSelectionComponent, NewCommentComponent,
+    ProjectComponent, NewMilestoneComponent, NewEpicComponent, EpicComponent
   ],
   bootstrap: [ AppComponent ]
 })

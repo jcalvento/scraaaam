@@ -1,0 +1,15 @@
+<div class="row">
+    <a [routerLink]="['/projects']">Atras</a>
+    <div class="col">
+        <h1>{{epic.name}}</h1>
+    </div>
+</div>
+<div>
+    <ul>
+        <li *ngFor="let comment of epic.comments" >
+            {{comment.submitted_at}}
+            {{comment.body}}
+        </li>
+    </ul>
+    <newComment [epic]="epic"></newComment>
+</div>
