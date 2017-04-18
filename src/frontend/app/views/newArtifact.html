@@ -8,12 +8,11 @@
     <div class="modal-body">
         <form>
             <input [(ngModel)]="data[attribute]" placeholder="{{artifact}}" name="{{attribute}}">
-            <button type="button" (click)="onSubmit()">Crear</button>
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cerrar</button>
+         <button class="btn btn-primary" (click)="onSubmit()">Crear</button>
     </div>
 </template>
 
-<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Agregar {{artifact}}</button>
+<button class="btn btn-outline-primary form-control" (click)="open(content)">Agregar {{artifact}}</button>
