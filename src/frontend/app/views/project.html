@@ -1,5 +1,5 @@
 
-<div class="row">
+<div class="row" *ngIf="project?._id">
     <div class="col-lg-7 big-artifact">
         <div class='l-big-artifact l-artifact'>
             <div class="col-lg-12 l-artifact-title">
@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-5">
+    <div class="col-lg-5" *ngIf="selectedMilestone?._id">
         <div class='l-small-artifact l-artifact'>
             <div class="col-lg-12 l-artifact-title">
                 <h3>Milestone: {{selectedMilestone?.name}}</h3>

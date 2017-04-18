@@ -14,11 +14,11 @@ export default class ProjectComponent {
   }
 
   isSelected(milestone) {
-    return milestone._id === this.selectedMilestone._id;
+    return this.selectedMilestone && milestone._id === this.selectedMilestone._id;
   }
 
   ngOnInit() {
-    this.projectSub = this.projectService.selectedProject.subscribe((project) => this.project = project)
+    this.projectSub = this.projectService.selectedProject.subscribe((project) => this.project = project);
     this.milestoneSub = this.projectService.selectedMilestone.subscribe((milestone) => { this.selectedMilestone = milestone })
   }
 
