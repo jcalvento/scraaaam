@@ -16,6 +16,7 @@ import NewMilestoneComponent from "./app/components/newMilestone.component";
 import NewCommentComponent from "./app/components/newComment.component";
 import ProjectComponent from "./app/components/project.component";
 import NewEpicComponent from "./app/components/newEpic.component";
+import NewTaskComponent from "./app/components/newTask.component";
 import EpicComponent from "./app/components/epic.component";
 
 import { RouterModule }  from '@angular/router';
@@ -30,7 +31,7 @@ let router = RouterModule.forRoot([
   imports: [ router, NgbModule.forRoot(), BrowserModule, FormsModule, HttpModule ],
   declarations: [
     AppComponent, NewProjectComponent, ProjectSelectionComponent, NewCommentComponent,
-    ProjectComponent, NewMilestoneComponent, NewEpicComponent, EpicComponent
+    ProjectComponent, NewMilestoneComponent, NewEpicComponent, EpicComponent, NewTaskComponent
   ],
   bootstrap: [ AppComponent ]
 })

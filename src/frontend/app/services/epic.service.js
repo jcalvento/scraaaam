@@ -17,6 +17,13 @@ export default class EpicService {
       .then((comment) => comment.json())
       .catch(err => console.log(err))
   }
+
+  createTask(epic, task) {
+    return this.http.post(`/epics/${epic._id}/task`, JSON.stringify(task), { headers: {'Content-Type': 'application/json'} })
+      .toPromise()
+      .then((task) => task.json())
+      .catch(err => console.log(err))
+  }
 }
 
 EpicService.parameters = [Http];
