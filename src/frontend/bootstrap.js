@@ -29,6 +29,7 @@ let router = RouterModule.forRoot([
 
 @NgModule({
   imports: [ router, NgbModule.forRoot(), BrowserModule, FormsModule, HttpModule ],
+   styleUrls: ['./assets/application.css'],
   declarations: [
     AppComponent, NewProjectComponent, ProjectSelectionComponent, NewCommentComponent,
     ProjectComponent, NewMilestoneComponent, NewEpicComponent, EpicComponent, NewTaskComponent
