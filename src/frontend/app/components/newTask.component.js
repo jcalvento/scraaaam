@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import EpicService from "../services/epic.service";
-const newTaskView = require('../views/newTask.html');
+const newArtifactView = require('../views/newArtifact.html');
 
-@Component({ selector: 'newTask', providers: [EpicService], inputs: ['epic'], template: newTaskView })
+@Component({ selector: 'newTask', providers: [EpicService], inputs: ['epic'], template: newArtifactView })
 export default class NewTaskComponent {
   constructor(modalService, epicService) {
+    this.attribute = 'description';
+    this.artifact = 'Tarea';
     this.data = {};
     this.modalService = modalService;
     this.epicService = epicService
@@ -16,7 +18,7 @@ export default class NewTaskComponent {
   }
 
   onSubmit(epic) {
-    this.epicService.createTask(epic, this.data).then((task) => epic.tasks.push(task));
+    this.epicService.createTask(this.epic, this.data).then((task) => this.epic.tasks.push(task));
     this.data = {};
     this.currentModal.close()
   }

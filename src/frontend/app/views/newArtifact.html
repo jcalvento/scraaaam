@@ -1,13 +1,13 @@
 <template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
-        <h4 class="modal-title">Nueva Epic</h4>
+        <h4 class="modal-title">Nuevo {{artifact}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
         <form>
-            <input [(ngModel)]="data.name" placeholder="Nombre" name="name">
+            <input [(ngModel)]="data[attribute]" placeholder="{{artifact}}" name="{{attribute}}">
             <button type="button" (click)="onSubmit()">Crear</button>
         </form>
     </div>
@@ -16,4 +16,4 @@
     </div>
 </template>
 
-<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Agregar Epic</button>
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Agregar {{artifact}}</button>

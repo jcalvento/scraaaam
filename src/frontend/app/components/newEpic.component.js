@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import ProjectService from "../services/project.service";
-const newEpicView = require('../views/newEpic.html');
+const newArtifactView = require('../views/newArtifact.html');
 
-@Component({ selector: 'newEpic', template: newEpicView })
+@Component({ selector: 'newEpic', template: newArtifactView })
 export default class NewEpicComponent {
   constructor(modalService, projectService) {
+    this.artifact = 'Epica';
+    this.attribute = 'name';
     this.data = {};
     this.modalService = modalService;
     this.projectService = projectService
