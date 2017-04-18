@@ -6,7 +6,5 @@ import AppView from "../views/app.html";
   selector: 'app-view', template: AppView, providers: [ProjectService]
 })
 export default class AppComponent {
-  constructor(projectService) { this.name = 'Scraaaam'; }
+  constructor() { this.name = 'Scraaaam' }
 }
-
-AppComponent.parameters = [ProjectService];
