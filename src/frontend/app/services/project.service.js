@@ -18,11 +18,20 @@ export default class ProjectService {
   get selectedMilestone() { return this._selectedMilestone }
 
   createProject(project) {
-    this._post('/project', project, (response) => this._concatToSubject(this._projects, response.json()))
+    this._post('/project', project, (response) => {
+      this._concatToSubject(this._projects, response.json());
+      let projects = this._projects.getValue();
+      if(projects.length === 1) {
+        this._selectedProject.next(projects[0])
+      }
+    })
   }
 
-  selectProject(project) { this._selectedProject.next(project) }
-  
+  selectProject(project) {
+    this._selectedProject.next(project);
+    this._selectedMilestone.next(null)
+  }
+
   createMilestone(milestone) {
     let project = this._selectedProject.getValue();
     this._post(`/project/${project._id}/milestone`, milestone, (response) => {
@@ -35,9 +44,9 @@ export default class ProjectService {
   selectMilestone(milestone) { this._selectedMilestone.next(milestone) }
 
   createEpic(epic) {
-    let selectedMilestone = this._selectedMilestone.getValue()
+    let selectedMilestone = this._selectedMilestone.getValue();
     this._post(`/milestone/${selectedMilestone._id}/epic`, epic, (response) =>{
-      selectedMilestone.epics.push(response.json())
+      selectedMilestone.epics.push(response.json());
       this._selectedMilestone.next(selectedMilestone)
     })
   }
@@ -51,8 +60,8 @@ export default class ProjectService {
   }
 
   _concatToSubject(subject, newElements) {
-    let existingElements = subject.getValue()
-    existingElements.push(newElements)
+    let existingElements = subject.getValue();
+    existingElements.push(newElements);
     return subject.next(existingElements)
   }
 
@@ -61,7 +70,7 @@ export default class ProjectService {
       .then(response => { 
         this._projects.next(response.json());
         if(this._projects.getValue().length > 0) {
-          let selectedProject = this._projects.getValue()[0]
+          let selectedProject = this._projects.getValue()[0];
           this._selectedProject.next(selectedProject);
           this._selectedMilestone.next(selectedProject.milestones[0])
         }

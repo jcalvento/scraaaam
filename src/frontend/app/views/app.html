@@ -1,17 +1,18 @@
 <div class="container">
-    <div class="header">
+    <div class="header m-header l-header">
         <div class="row">
-            <div class="col">
+            <div class="col-lg-4">
                 <h1>{{name}}</h1>
             </div>
-            <div class="col">
-                <projectSelection></projectSelection>
+            <div class="col-lg-4">
+                <div class="form-group mx-sm-3">
+                    <projectSelection></projectSelection>
+                </div>
             </div>
-            <div class="col">
+            <div class="col-lg-2">
                 <newProject></newProject>
             </div>
         </div>
     </div>
-    <hr>
     <router-outlet></router-outlet>
 </div>

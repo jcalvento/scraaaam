@@ -1,23 +1,40 @@
 <div class="row">
-    <a [routerLink]="['/projects']">Atras</a>
-    <div class="col">
-        <h1>{{epic.name}}</h1>
+    <div class="col-lg-12">
+        <a [routerLink]="['/projects']"> << Atras</a>
     </div>
-</div>
-<div>
-    <ul>
-        <li *ngFor="let comment of epic.comments" >
-            {{comment.submitted_at}}
-            {{comment.body}}
-        </li>
-    </ul>
-    <newComment [epic]="epic"></newComment>
-</div>
-<div>
-    <ul>
-        <li *ngFor="let task of epic.tasks" >
-            {{task.description}}
-        </li>
-    </ul>
-    <newTask [epic]="epic"></newTask>
+    <div class="col-lg-7 big-artifact">
+        <div class='l-big-artifact l-artifact'>
+            <div class="col-lg-12 l-artifact-title">
+                <h1>Epica: {{epic.name}}</h1>
+            </div>
+            <div *ngFor="let comment of epic.comments">
+                <div class="col-lg-8  l-comment">
+                    <div class="comment">
+                        <label>Comentado: {{comment.submitted_at | date: 'dd/MM/yyyy HH:MM' }}</label>
+                        <p>{{comment.body}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class='l-new-artifact'>
+                <newComment [epic]="epic"></newComment>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class='l-small-artifact l-artifact'>
+            <div class="col-lg-12 l-artifact-title">
+                <h3>Tareas</h3>
+            </div>
+            <ul class="list-group">
+                <div *ngFor="let task of epic.tasks">
+                    <li class="list-group-item justify-content-between artifact-option" [routerLink]="['/epics', epic._id]">
+                        {{task.description}}
+                    </li>
+                </div>
+            </ul>
+        </div>
+        <div class='l-new-artifact'>
+            <newTask [epic]="epic"></newTask>
+        </div>
+    </div>
 </div>
