@@ -9,19 +9,25 @@ import Task from "../models/Task";
 
 let router = express.Router();
 
-router.param('project', (req, res, next, value) => {
-  findRecord(req, res, next, value, Project)
-});
+// Define router params.
+(() => {
+  [
+    { paramName: 'project', record: findRecord(Project) },
+    { paramName: 'milestone', record: findRecord(Milestone) },
+    { paramName: 'epic', record: findRecord(Epic) }
+  ].map(param => { router.param(param.paramName, param.record) })
+})();
 
-router.param('milestone', (req, res, next, value) => {
-  findRecord(req, res, next, value, Milestone)
-});
+// Define post creator routes.
+(() => {
+  [
+    { routePath: '/project/:project/milestone', createAssociationBlock: createRecordAssociatedWith(Milestone, 'project') },
+    { routePath: '/milestone/:milestone/epic', createAssociationBlock: createRecordAssociatedWith(Epic, 'milestone') },
+    { routePath: '/epics/:epic/comment', createAssociationBlock: createRecordAssociatedWith(Comment, 'epic') },
+    { routePath: '/epics/:epic/task', createAssociationBlock: createRecordAssociatedWith(Task, 'epic') }
+  ].map(postParam => { router.post(postParam.routePath, postParam.createAssociationBlock) })
+})();
 
-router.param('epic', (req, res, next, value) => {
-  findRecord(req, res, next, value, Epic)
-});
-
-// Express routes
 router.get('/projects', (req, res, next) => {
   Project.find().populate({ path:'milestones', model: 'Milestone', populate: { path: 'epics', model: 'Epic'}})
     .then(projects => res.json(projects))
@@ -36,24 +42,8 @@ router.post('/project', (req, res, next) => {
     .catch(next)
 });
 
-router.post('/project/:project/milestone', (req, res, next) => {
-  createRecordAssociatedWith(req, res, next, Milestone, 'project')
-});
-
-router.post('/milestone/:milestone/epic', (req, res, next) => {
-  createRecordAssociatedWith(req, res, next, Epic, 'milestone')
-});
-
 router.get('/epics/:epic', (req, res, next) => {
   req.epic.populate('comments tasks').execPopulate().then(epic => res.json(epic)).catch(next);
-});
-
-router.post('/epics/:epic/comment', (req, res, next) => {
-  createRecordAssociatedWith(req, res, next, Comment, 'epic')
-});
-
-router.post('/epics/:epic/task', (req, res, next) => {
-  createRecordAssociatedWith(req, res, next, Task, 'epic')
 });
 
 export default router

@@ -1,19 +1,17 @@
-function findRecord(req, res, next, value, record) {
-  const modelName = record.modelName;
-  console.log(modelName);
-  record.findById(value)
+const findRecord = (recordSchema) => (req, res, next, value) => {
+  const modelName = recordSchema.modelName;
+  recordSchema.findById(value)
     .then(recordInstance => {
       if (!recordInstance) {
         throw new Error(`${modelName} not found ${value}`)
       }
       req[modelName.toLowerCase()] = recordInstance;
-      console.log(recordInstance);
       next()
     })
     .catch(next)
-}
+};
 
-function createRecordAssociatedWith(req, res, next, recordTable, associationName) {
+const createRecordAssociatedWith = (recordTable, associationName) => (req, res, next) => {
   const newRecord = new recordTable(req.body);
   let association = req[associationName];
   newRecord[associationName] = association;
@@ -30,6 +28,6 @@ function createRecordAssociatedWith(req, res, next, recordTable, associationName
       res.json(newRecord)
     })
     .catch(next)
-}
+};
 
 export { findRecord, createRecordAssociatedWith }
