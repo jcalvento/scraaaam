@@ -1,4 +1,5 @@
 import chai from "chai"
+import sinon from "sinon"
 import chaiAsPromised from "chai-as-promised"
 
 import { setupMocha } from "../setup"
@@ -16,12 +17,12 @@ describe("Project related endpoints", () => {
   const newProjectName = 'Project for test'
 
   describe("POST /project", () => {
-    it("Creates a new project", async() => {   
-      const response = await post("/project", { "name": newProjectName }, 200) 
-      
+    it("Creates a new project", async() => {
+      const response = await post("/project", { "name": newProjectName }, 200)
+
       const body = response.body
-          
-      expect(body.name).to.eq(newProjectName) 
+
+      expect(body.name).to.eq(newProjectName)
       expect(body.createdAt).to.be.present
     })
 
@@ -29,7 +30,7 @@ describe("Project related endpoints", () => {
       const response = await post("/project", { "name": newProjectName }, 200)
 
       const body = response.body
-        
+
       expect(body.milestones).to.be.empty
     })
   })
@@ -68,7 +69,7 @@ describe("Project related endpoints", () => {
       const epic = await Epic.create({ name: newEpicName })
       const milestone = await Milestone.create({ name: newMilestoneName, epics: [epic] })
       const project = await asPlainJSON(Project.create({ name: newProjectName, milestones: [milestone] }))
-            
+
       const response = await get("/projects", 200)
 
       expectToBeEqual(response, [project])
