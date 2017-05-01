@@ -6,7 +6,10 @@
   "scripts": {
     "prestart": "mongod --dbpath mongo_data --fork --logpath /dev/null",
     "start": "babel-node -- src/backend/index.js",
-    "stop": "mongo admin --eval 'db.shutdownServer()' > /dev/null"
+    "stop": "mongo admin --eval 'db.shutdownServer()' > /dev/null",
+    "coverage-test": "NODE_ENV=test nyc --require babel-core/register mocha --compilers js:babel-register --recursive test",
+    "coverage-report": "nyc report --reporter=lcov",
+    "coverage-upload": "codecov"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +24,8 @@
     "css-loader": "^0.27.3",
     "html-webpack-plugin": "^2.28.0",
     "json-loader": "^0.5.4",
+    "nyc": "^10.3.0",
+    "mocha": "^3.2.0",
     "raw-loader": "^0.5.1",
     "webpack": "^2.3.1"
   },
