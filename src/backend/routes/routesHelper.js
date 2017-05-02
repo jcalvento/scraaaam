@@ -2,13 +2,12 @@ const findRecord = (recordSchema) => (req, res, next, value) => {
   const modelName = recordSchema.modelName;
   recordSchema.findById(value)
     .then(recordInstance => {
-      if (!recordInstance) {
-        throw new Error(`${modelName} not found ${value}`)
-      }
       req[modelName.toLowerCase()] = recordInstance;
       next()
     })
-    .catch(next)
+    .catch(error => {
+      res.status(404).send('Not found')
+    })
 };
 
 const createRecordAssociatedWith = (recordTable, associationName) => (req, res, next) => {

@@ -10,10 +10,10 @@ export function setupMocha() {
 	})
 
 	after("Restore mongoose", done => {
-  	mongoose.unmock(done);
+		mongoose.unmock(done);
 	})
 
 	afterEach("Reset mock mongo database", done => {
-	  mockgoose.reset(done);
+		mockgoose.reset(done);
 	})
 }
