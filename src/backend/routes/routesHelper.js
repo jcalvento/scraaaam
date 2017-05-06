@@ -20,9 +20,7 @@ const createRecordAssociatedWith = (recordTable, associationName) => (req, res, 
       const manyRelation = `${recordTable.modelName.toLowerCase()}s`;
       association[manyRelation].push(savedRecord);
 
-      association.save()
-        .then(_ => res.json(savedRecord))
-        .catch(next);
+      association.save().catch(next);
 
       res.json(newRecord)
     })
