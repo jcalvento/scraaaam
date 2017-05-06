@@ -11,13 +11,13 @@ export default class EpicComponent {
   }
 
   ngOnInit() {
-    this.epic = {}
+    this.epic = {};
     this.route.params.subscribe(params => {
       this.epicService.getEpic(params.id)
           .then(epic => this.epic = epic)
           .catch(e => console.log(e));
     });
-}
+  }
 }
 
 EpicComponent.parameters = [ActivatedRoute, EpicService];

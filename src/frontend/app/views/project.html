@@ -13,15 +13,13 @@
     <div class="col-lg-7 big-artifact">
         <div class='l-big-artifact l-artifact'>
             <div class="col-lg-12 l-artifact-title">
-                <h1>Proyecto: {{project?.name}}</h1>
+                <h1 id="selected-project-name">Proyecto: {{project?.name}}</h1>
             </div>
             <ul class="list-group">
-                <div *ngFor="let milestone of project?.milestones">
-                    <li class="list-group-item justify-content-between artifact-option" [ngClass]="{'active' : isSelected(milestone)}" (click)="selectMilestone(milestone)">
-                        {{milestone.name}}
-                        <span class="badge badge-default badge-pill">{{milestone.epics.length}} epics</span>
-                    </li>
-                </div>
+                <li *ngFor="let milestone of project?.milestones" class="milestone list-group-item justify-content-between artifact-option" [ngClass]="{'active' : isSelected(milestone)}" (click)="selectMilestone(milestone)">
+                    {{milestone.name}}
+                    <span class="badge badge-default badge-pill">{{milestone.epics.length}} epics</span>
+                </li>
             </ul>
             <div class='l-new-artifact'>
                 <newMilestone></newMilestone>
@@ -34,11 +32,9 @@
                 <h3>Milestone: {{selectedMilestone?.name}}</h3>
             </div>
             <ul class="list-group">
-                <div *ngFor="let epic of selectedMilestone?.epics">
-                    <li class="list-group-item justify-content-between artifact-option" [routerLink]="['/epics', epic._id]">
-                        {{epic.name}}
-                    </li>
-                </div>
+                <li *ngFor="let epic of selectedMilestone?.epics" class="epic list-group-item justify-content-between artifact-option" [routerLink]="['/epics', epic._id]">
+                    {{epic.name}}
+                </li>
             </ul>
         </div>
         <div class='l-new-artifact'>

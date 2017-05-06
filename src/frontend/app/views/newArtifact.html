@@ -11,8 +11,8 @@
         </form>
     </div>
     <div class="modal-footer">
-         <button class="btn btn-primary" (click)="onSubmit()">Crear</button>
+         <button class="btn btn-primary" id="submit-modal" (click)="onSubmit()">Crear</button>
     </div>
 </template>
 
-<button class="btn btn-outline-primary form-control" (click)="open(content)">Agregar {{artifact}}</button>
+<button class="btn btn-outline-primary form-control" id="new-{{artifact.toLowerCase()}}" (click)="open(content)">Agregar {{artifact}}</button>
