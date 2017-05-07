@@ -25,7 +25,7 @@ let router = RouterModule.forRoot([
   { path: '', redirectTo: '/projects', pathMatch: 'full' },
   { path: 'projects', component: ProjectComponent },
   { path: 'epics/:id', component: EpicComponent }
-], { useHash: true })
+], { useHash: true });
 
 @NgModule({
   imports: [ router, NgbModule.forRoot(), BrowserModule, FormsModule, HttpModule ],

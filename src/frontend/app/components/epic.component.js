@@ -18,6 +18,12 @@ export default class EpicComponent {
           .catch(e => console.log(e));
     });
   }
+
+  deleteTask(task) {
+    this.epicService.deleteTask(task).then((deletedTask) =>{
+      this.epic.tasks = this.epic.tasks.filter(task => task._id !== deletedTask._id)
+    });
+  }
 }
 
 EpicComponent.parameters = [ActivatedRoute, EpicService];
