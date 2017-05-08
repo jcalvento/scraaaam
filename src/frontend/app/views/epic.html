@@ -26,11 +26,12 @@
                 <h3>Tareas</h3>
             </div>
             <ul class="list-group">
-                <div *ngFor="let task of epic.tasks">
-                    <li class="list-group-item justify-content-between artifact-option" [routerLink]="['/epics', epic._id]">
-                        {{task.description}}
-                    </li>
-                </div>
+                <li *ngFor="let task of epic.tasks" class="task list-group-item justify-content-between">
+                    {{task.description}}
+                    <button type="button" class="delete-task close" aria-label="Close" (click)="deleteTask(task)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </li>
             </ul>
         </div>
         <div class='l-new-artifact'>

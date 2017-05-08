@@ -24,6 +24,13 @@ export default class EpicService {
       .then((task) => task.json())
       .catch(err => console.log(err))
   }
+
+  deleteTask(task) {
+    return this.http.delete(`/tasks/${task._id}`, { headers: {'Content-Type': 'application/json'} })
+      .toPromise()
+      .then((task) => task.json())
+      .catch(err => console.log(err))
+  }
 }
 
 EpicService.parameters = [Http];
