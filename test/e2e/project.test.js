@@ -1,15 +1,12 @@
 import "babel-polyfill"
-import mongoose from 'mongoose'
 import chai from "chai"
 import factory from "factory-girl"
+import {cleanDB} from "./support/cleanDB";
 const expect = chai.expect;
 require('./../factories/all_factories');
 
 describe("Projects", () => {
-
-  afterEach(() => {
-    mongoose.connect("mongodb://localhost/scram", () => mongoose.connection.db.dropDatabase())
-  });
+  cleanDB();
 
   it("creates a new project", async() => {
     browser.get("http://localhost:3001");

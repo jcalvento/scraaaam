@@ -1,17 +1,14 @@
 import "babel-polyfill"
-import mongoose from 'mongoose';
 import chai from "chai"
 import Epic from "../../src/backend/models/Epic";
 import factory from 'factory-girl';
+import {cleanDB} from "./support/cleanDB";
 require('./../factories/all_factories');
 
 const expect = chai.expect;
 
 describe("Tasks", () => {
-
-  afterEach(() => {
-    mongoose.connect("mongodb://localhost/scram", () => mongoose.connection.db.dropDatabase())
-  });
+  cleanDB();
 
   it("creates a new task", async() => {
     const epic = await factory.create('Epic');

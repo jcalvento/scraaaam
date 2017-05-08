@@ -1,16 +1,13 @@
 import "babel-polyfill"
-import mongoose from 'mongoose';
 import chai from "chai"
 import factory from 'factory-girl';
+import {cleanDB} from "./support/cleanDB";
 require('./../factories/all_factories');
 
 const expect = chai.expect;
 
 describe("Milestones", () => {
-
-  afterEach(() => {
-    mongoose.connect("mongodb://localhost/scram", () => mongoose.connection.db.dropDatabase())
-  });
+  cleanDB();
 
   it("creates a new milestone", async() => {
     await factory.create('Project');

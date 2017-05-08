@@ -1,13 +1,10 @@
 import "babel-polyfill"
-import mongoose from 'mongoose';
 import chai from "chai"
+import {cleanDB} from './support/cleanDB'
 const expect = chai.expect;
 
 describe("Epics", () => {
-
-  afterEach(() => {
-    mongoose.connect("mongodb://localhost/scram", () => mongoose.connection.db.dropDatabase())
-  });
+  cleanDB();
 
   beforeEach(() => {
     browser.get("http://localhost:3001");
