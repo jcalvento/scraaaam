@@ -1,6 +1,9 @@
 import "babel-polyfill"
 import mongoose from 'mongoose';
 import chai from "chai"
+import factory from 'factory-girl';
+require('./../factories/all_factories');
+
 const expect = chai.expect;
 
 describe("Milestones", () => {
@@ -10,10 +13,8 @@ describe("Milestones", () => {
   });
 
   it("creates a new milestone", async() => {
+    await factory.create('Project');
     browser.get("http://localhost:3001");
-    element(by.id("new-project")).click();
-    element(by.css("input[ng-reflect-name=name]")).sendKeys("Proyecto");
-    element(by.id("submit-modal")).click();
 
     element(by.id("new-milestone")).click();
     element(by.css("input[ng-reflect-name=name]")).sendKeys("Milestone");

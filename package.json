@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prestart": "mongod --dbpath mongo_data --fork --logpath /dev/null",
     "start": "babel-node -- src/backend/server.js",
     "stop": "mongo admin --eval 'db.shutdownServer()' > /dev/null",
     "coverage-test": "NODE_ENV=test nyc --require babel-core/register mocha --compilers js:babel-register --recursive test",
@@ -55,6 +54,7 @@
     "body-parser": "^1.17.1",
     "bootstrap": "^4.0.0-alpha.6",
     "express": "latest",
+    "factory-girl": "^4.2.2",
     "mongoose": "^4.9.1",
     "reflect-metadata": "^0.1.10",
     "rxjs": "5.0.1",

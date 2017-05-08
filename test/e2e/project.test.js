@@ -1,7 +1,9 @@
 import "babel-polyfill"
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 import chai from "chai"
+import factory from "factory-girl"
 const expect = chai.expect;
+require('./../factories/all_factories');
 
 describe("Projects", () => {
 
@@ -21,14 +23,9 @@ describe("Projects", () => {
   });
 
   it("changes actual project", async() => {
-    browser.get("http://localhost:3001");
-
-    element(by.id("new-project")).click();
-    element(by.css("input[ng-reflect-name=name]")).sendKeys("Proyecto");
-    element(by.id("submit-modal")).click();
-    element(by.id("new-project")).click();
-    element(by.css("input[ng-reflect-name=name]")).sendKeys("Proyecto 2");
-    await element(by.id("submit-modal")).click();
+    await factory.create('Project', {name: 'Proyecto'});
+    await factory.create('Project', {name: 'Proyecto 2'});
+    await browser.get("http://localhost:3001/");
 
     const options = await $('#project-list').all(by.tagName('option'));
     options[1].click();
