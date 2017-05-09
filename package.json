@@ -6,10 +6,10 @@
   "scripts": {
     "start": "babel-node -- src/backend/server.js",
     "stop": "mongo admin --eval 'db.shutdownServer()' > /dev/null",
-    "coverage-test": "NODE_ENV=test nyc --require babel-core/register mocha --compilers js:babel-register --recursive test",
+    "coverage-test": "NODE_ENV=test nyc --require babel-core/register mocha --require babel-polyfill --compilers js:babel-register --recursive test/frontend test/backend",
     "coverage-report": "nyc report --reporter=lcov",
     "coverage-upload": "codecov",
-    "test": "mocha test/**/* --compilers js:babel-core/register --require babel-polyfill --timeout 120000"
+    "test": "mocha test/backend/* test/frontend/* --compilers js:babel-core/register --require babel-polyfill --timeout 120000"
   },
   "keywords": [],
   "author": "",
