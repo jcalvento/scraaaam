@@ -79,6 +79,5 @@ export default class ProjectService {
 }
 
 ProjectService.parameters = [
-  Http, new BehaviorSubject([]),
-  new BehaviorSubject({}), new BehaviorSubject({})
-  ]
+  Http, new BehaviorSubject([]),new BehaviorSubject({}), new BehaviorSubject({})
+]

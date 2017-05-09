@@ -1,6 +1,7 @@
 import chai from "chai"
 import sinon from "sinon"
 import sinonChai from "sinon-chai"
+import { stubPost, createResponse } from "../support/serviceHelpers"
 
 import { Http } from '@angular/http';
 
@@ -28,7 +29,7 @@ describe("Epic service", ()=> {
     const comment = { body: 'A body' }
     const expectedURL = `/epics/${fakeEpic._id}/comment`
     const expectedPayload =  JSON.stringify(comment)
-    stubPost(expectedURL, expectedPayload, comment)
+    stubPost(http, expectedURL, expectedPayload, comment)
   
     service.createComment(fakeEpic, comment)
 
@@ -39,28 +40,10 @@ describe("Epic service", ()=> {
     const task = { description: 'A description' }
     const expectedURL = `/epics/${fakeEpic._id}/task`
     const expectedPayload = JSON.stringify(task)
-    stubPost(expectedURL, expectedPayload, task)
+    stubPost(http, expectedURL, expectedPayload, task)
     
     service.createTask(fakeEpic, task)
 
     http.post.should.have.been.calledWith(expectedURL, expectedPayload)
   })
-
-  const stubPost = (url, payload, returnValue) => {
-    http.post.withArgs(url, payload).callsFake(() => {
-        return createResponse(returnValue)
-    })
-  }
-
-  const createResponse = (data) => {
-    return {
-      toPromise() {
-        return Promise.resolve({
-          json() {
-            return data;
-          }
-        })
-      }
-    }
-  }
 })
