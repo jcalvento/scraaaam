@@ -18,24 +18,18 @@ describe("ProjectService", () => {
   ]
   let service
   let http
-  let projectSub
-  let selectedProjectSub
-  let selectedMilestoneSub
 
   beforeEach(async() => {
     http = sinon.createStubInstance(Http)
-    projectSub = new BehaviorSubject([])
-    selectedProjectSub = new BehaviorSubject({})
-    selectedMilestoneSub = new BehaviorSubject({})
-
+    
     http.get.withArgs("/projects").callsFake(() => createResponse(projects));
-    service = await new ProjectService(http, projectSub, selectedProjectSub, selectedMilestoneSub)
+    service = await new ProjectService(http)
   })
 
   it("Loads initial data from the server", () => {
-    const currentProjects = projectSub.getValue()
+    const currentProjects = service.projects.getValue()
     currentProjects.should.be.deep.equals(projects)
-    selectedProjectSub.getValue().should.equals(projects[0])
+    service.selectedProject.getValue().should.equals(projects[0])
   })
 
   describe("#createProject", () => {
@@ -43,13 +37,13 @@ describe("ProjectService", () => {
       const newProject = { name: 'New project' }
       const expectedPayload = JSON.stringify(newProject)
       const expectedURL = `/project`
-      projectSub.next(projects)
+      service.projects.next(projects)
       stubPost(http, expectedURL, expectedPayload, newProject)
 
       service.createProject(newProject)
 
-      projectSub.getValue().should.be.deep.equals(projects)
-      selectedProjectSub.getValue().should.equals(projects[0])
+      service.projects.getValue().should.be.deep.equals(projects)
+      service.selectedProject.getValue().should.equals(projects[0])
       http.post.should.have.been.calledWith(expectedURL, expectedPayload)
     })
   })
@@ -57,14 +51,14 @@ describe("ProjectService", () => {
   describe("#createMilestone", () => {
     it("invokes the backend to create the project", async() =>{
       const project = projects[0]
-      selectedProjectSub.next(project)
+      service.projects.next(project)
       const newMilestone = { name: 'Nueva milestone' }
       const expectedPayload = JSON.stringify(newMilestone)
       const expectedURL = `/project/${project._id}/milestone`
       stubPost(http, expectedURL, expectedPayload, newMilestone)
 
       await service.createMilestone(newMilestone)
-      const updatedProject = selectedProjectSub.getValue()
+      const updatedProject = service.selectedProject.getValue()
 
       updatedProject.milestones.should.have.lengthOf(1)
       http.post.should.have.been.calledWith(expectedURL, expectedPayload)
@@ -74,18 +68,17 @@ describe("ProjectService", () => {
   describe("#createEpic", () => {
     it("invokes the backend to create the project", async() =>{
       const milestone = { _id: 'eh484h4j3ihh98hr93', name: 'New milestone', epics: [] }
-      selectedMilestoneSub.next(milestone)
+      service.selectedMilestone.next(milestone)
       const newEpic = { name: 'A new epic' }
       const expectedPayload = JSON.stringify(newEpic)
       const expectedURL = `/milestone/${milestone._id}/epic`
       stubPost(http, expectedURL, expectedPayload, newEpic)
 
       await service.createEpic(newEpic)
-      const updatedMilestone = selectedMilestoneSub.getValue()
+      const updatedMilestone = service.selectedMilestone.getValue()
 
       updatedMilestone.epics.should.have.lengthOf(1)
       http.post.should.have.been.calledWith(expectedURL, expectedPayload)
     })
   })
-
 })
