@@ -9,7 +9,9 @@
     "coverage-test": "NODE_ENV=test nyc --require babel-core/register mocha --require babel-polyfill --compilers js:babel-register --recursive test/frontend test/backend",
     "coverage-report": "nyc report --reporter=lcov",
     "coverage-upload": "codecov",
-    "test": "mocha test/backend/* test/frontend/* --compilers js:babel-core/register --require babel-polyfill --timeout 120000"
+    "test": "mocha test/backend/* test/frontend/* --compilers js:babel-core/register --require babel-polyfill --timeout 120000",
+    "webdriver-manager": "./node_modules/protractor/bin/webdriver-manager start",
+    "protractor": "./node_modules/protractor/bin/protractor protractor.conf"
   },
   "keywords": [],
   "author": "",
