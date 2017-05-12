@@ -8,4 +8,6 @@ app.use(bodyParser.json());
 app.use(routes);
 app.use(express.static(__dirname + "/../../dist/frontend"));
 
+process.title = 'scraaaam';
+
 export default app;
