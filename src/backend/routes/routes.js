@@ -46,4 +46,9 @@ router.get('/epics/:epic', (req, res, next) => {
   req.epic.populate('comments tasks').execPopulate().then(epic => res.json(epic)).catch(next);
 });
 
+router.delete('/tasks/:task', (req, res, next) => {
+  let taskId = req.params.task;
+  Task.remove({_id: taskId}).then(_ => res.json({_id: taskId})).catch(next);
+});
+
 export default router

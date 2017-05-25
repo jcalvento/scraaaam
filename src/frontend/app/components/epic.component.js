@@ -11,13 +11,19 @@ export default class EpicComponent {
   }
 
   ngOnInit() {
-    this.epic = {}
+    this.epic = {};
     this.route.params.subscribe(params => {
       this.epicService.getEpic(params.id)
           .then(epic => this.epic = epic)
           .catch(e => console.log(e));
     });
-}
+  }
+
+  deleteTask(task) {
+    this.epicService.deleteTask(task).then((deletedTask) =>{
+      this.epic.tasks = this.epic.tasks.filter(task => task._id !== deletedTask._id)
+    });
+  }
 }
 
 EpicComponent.parameters = [ActivatedRoute, EpicService];

@@ -28,6 +28,10 @@ module.exports = {
     new CopyWebpackPlugin([{
       from: 'src/frontend/assets',
       to: 'assets'
+    }]),
+    new CopyWebpackPlugin([{
+      from: 'node_modules/bootstrap/dist/css/',
+      to: 'bootstrap'
     }])
   ],
 

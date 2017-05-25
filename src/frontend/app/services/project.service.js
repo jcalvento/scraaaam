@@ -5,11 +5,10 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 @Injectable()
 export default class ProjectService {  
   constructor(http) {
-    this.http = http;
-    this._projects = new BehaviorSubject([]);
-    this._selectedProject = new BehaviorSubject({});
-    this._selectedMilestone = new BehaviorSubject({});
-
+    this.http = http
+    this._projects = new BehaviorSubject([])
+    this._selectedProject = new BehaviorSubject({})
+    this._selectedMilestone = new BehaviorSubject({})
     this._loadInitialData()
   }
 
@@ -79,4 +78,6 @@ export default class ProjectService {
   }
 }
 
-ProjectService.parameters = [Http];
+ProjectService.parameters = [
+  Http
+]
