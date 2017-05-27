@@ -6,7 +6,7 @@
   "scripts": {
     "start": "babel-node -- src/backend/server.js",
     "stop": "mongo admin --eval 'db.shutdownServer()' > /dev/null",
-    "lint": "gulp lint",
+    "gulp": "gulp",
     "coverage-test": "NODE_ENV=test nyc --require babel-core/register mocha --require babel-polyfill --compilers js:babel-register --recursive test/frontend test/backend",
     "coverage-report": "nyc report --reporter=lcov",
     "coverage-upload": "codecov",
