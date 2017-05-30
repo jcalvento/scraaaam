@@ -6,4 +6,5 @@ before_script:
   - npm install -g gulp
 
 script:
-- gulp lint
+  - gulp lint
+  - gulp all
