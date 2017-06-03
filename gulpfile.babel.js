@@ -13,7 +13,7 @@ const frontendFiles = 'src/frontend/**/*.js';
 const testsFiles = 'test/**/*.js';
 const buildDist = (folderName) => `dist/${folderName}`;
 const protractor = require("gulp-protractor").protractor;
-
+let server;
 
 gulp.task('lint', () => {
   return gulp.src([testsFiles, srcFiles])
@@ -51,14 +51,17 @@ gulp.task('frontend-components', () =>
     .pipe(mocha({reporter: 'nyan', compilers: 'js:babel-core/register', require: 'babel-polyfill', timeout: 120000}))
 );
 
-gulp.task('frontend-e2e', () => {}
-  // gulp.src('./test/e2e/*.test.js')
-  //   .pipe(protractor({
-  //     configFile: "./protractor.conf.js",
-  //     args: ['--baseUrl', 'http://127.0.0.1:3001']
-  //   }))
-  //   .on('error', function(e) { throw e })
-);
+gulp.task('frontend-e2e', ['start:watch'], () => {
+  gulp.src('./test/e2e/*.test.js')
+      .pipe(protractor({
+        configFile: "./protractor.conf.js",
+        args: ['--baseUrl', 'http://127.0.0.1:3001']
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+  server.stop();
+});
 
 gulp.task('frontend-all', ['frontend-components', 'frontend-e2e']);
 
