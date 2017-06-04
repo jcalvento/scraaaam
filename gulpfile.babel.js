@@ -3,6 +3,8 @@ import eslint from 'gulp-eslint'
 import babel from 'gulp-babel'
 import uglify from 'gulp-uglify'
 import gls from 'gulp-live-server'
+import webpackStream from 'webpack-stream'
+import webpack from 'webpack';
 
 const srcFiles = 'src/**/*.js';
 const backendFiles = 'src/backend/**/*.js';
@@ -20,13 +22,18 @@ gulp.task('lint', () => {
 gulp.task('transpile', () => {
   gulp.src(backendFiles).pipe(babel()).pipe(gulp.dest(buildDist('backend')));
 
-  gulp.src(frontendFiles).pipe(babel()).pipe(uglify()).pipe(gulp.dest(buildDist('frontend')))
+  const webPackEntryPoint = './src/frontend/bootstrap.js'
+  const webPackConfig = require('./webpack.config.js')
+  
+  return gulp.src(webPackEntryPoint)
+    .pipe(webpackStream(webPackConfig, webpack))
+    .pipe(gulp.dest(buildDist('frontend')))
 });
 
-gulp.task('transpile:watch', () => gulp.watch(srcFiles, ['transpile']));
+gulp.task('transpile:watch', ['transpile'], () => gulp.watch(srcFiles, ['transpile']));
 
-gulp.task('start:watch', ['transpile:watch'], () => {
+gulp.task('start:watch', ['transpile', 'transpile:watch'], () => {
   const server = gls.new(['--', buildDist('backend/server.js')]);
   
-  server.start()
+  return server.start()
 });
