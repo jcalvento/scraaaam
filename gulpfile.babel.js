@@ -35,11 +35,14 @@ gulp.task('transpile', () => {
 
 gulp.task('transpile:watch', ['transpile'], () => gulp.watch(srcFiles, ['transpile']));
 
-gulp.task('start:watch', ['transpile', 'transpile:watch'], () => {
-  const server = gls.new(['--', buildDist('backend/server.js')]);
-  
+const startServer = function() {
+  server = gls.new(['--', buildDist('backend/server.js')]);
+
   return server.start()
-});
+};
+
+gulp.task('start:watch', ['transpile', 'transpile:watch'], startServer);
+gulp.task('start', ['transpile'], startServer);
 
 gulp.task('test-backend', () =>
   gulp.src('test/backend/*', {read: false})
@@ -51,7 +54,7 @@ gulp.task('frontend-components', () =>
     .pipe(mocha({reporter: 'nyan', compilers: 'js:babel-core/register', require: 'babel-polyfill', timeout: 120000}))
 );
 
-gulp.task('frontend-e2e', ['start:watch'], () => {
+gulp.task('frontend-e2e', () => {
   gulp.src('./test/e2e/*.test.js')
       .pipe(protractor({
         configFile: "./protractor.conf.js",
@@ -60,7 +63,6 @@ gulp.task('frontend-e2e', ['start:watch'], () => {
       .on('error', function (e) {
         throw e
       });
-  server.stop();
 });
 
 gulp.task('frontend-all', ['frontend-components', 'frontend-e2e']);

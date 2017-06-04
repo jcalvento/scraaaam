@@ -1,3 +1,11 @@
+sudo: required
+dist: trusty
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
 language: node_js
 node_js:
   - "6"
@@ -5,9 +13,20 @@ cache:
   directories:
     - node_modules
 
+services:
+  - mongodb
+
 before_script:
   - npm install -g gulp
+  - gulp transpile
+  - ./node_modules/protractor/bin/webdriver-manager update
+  - "export DISPLAY=:99.0"
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3
 
 script:
   - gulp lint
-  - gulp all
+  - gulp all-non-e2e
+  - gulp start &
+  - gulp frontend-e2e
+  - npm stop
