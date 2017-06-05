@@ -2,12 +2,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './src/frontend/bootstrap.js',
-  output: {
-    path: __dirname + '/dist/frontend',
-    filename: 'bundle.js'
-  },
-
   module: {
     loaders: [
       // load and compile javascript
@@ -23,7 +17,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/frontend/index.html',
       inject: 'body',
-      minify: false
+      minify: { removeAttributeQuotes: true }
     }),
     new CopyWebpackPlugin([{
       from: 'src/frontend/assets',
