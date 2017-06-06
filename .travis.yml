@@ -13,6 +13,9 @@ cache:
   directories:
     - node_modules
 
+install:
+  - pip install codecov
+
 services:
   - mongodb
 
@@ -27,6 +30,8 @@ before_script:
 script:
   - gulp lint
   - gulp all-non-e2e
+  - npm run coverage-report
+  - npm run coverage-upload --token=:codecov
   - gulp start &
   - gulp frontend-e2e
   - npm stop
