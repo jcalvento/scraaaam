@@ -20,7 +20,8 @@ services:
   - mongodb
 
 before_script:
-  - npm install -g gulp
+  - npm install -g gulp-cli
+  - npm install
   - gulp transpile
   - ./node_modules/protractor/bin/webdriver-manager update
   - "export DISPLAY=:99.0"
