@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import app from './app'
 
-mongoose.connect('mongodb://localhost/scram');
+mongoose.connect(process.env.DATABASE_URL);
 
 const port = 3001;
 app.listen(port, () => {

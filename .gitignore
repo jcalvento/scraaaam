@@ -4,3 +4,4 @@ npm-debug.log
 mongo_data/
 dist/
 .nyc_output/
+.env
