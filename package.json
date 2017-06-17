@@ -63,6 +63,7 @@
     "@ng-bootstrap/ng-bootstrap": "1.0.0-alpha.22",
     "body-parser": "^1.17.1",
     "bootstrap": "^4.0.0-alpha.6",
+    "dotenv": "^4.0.0",
     "express": "latest",
     "factory-girl": "^4.2.2",
     "mongoose": "^4.9.1",
