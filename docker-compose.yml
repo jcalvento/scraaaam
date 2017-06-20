@@ -4,10 +4,23 @@ mongo:
     - "27017:27017"
   command: "--smallfiles --logpath=/dev/null"
 backend:
-  build: .
+  build: '.'
   ports:
     - "3001:3001"
   links:
     - mongo
   environment: 
     DATABASE_URL: 'mongodb://mongo/scram'
+webdriver:
+  image: 'selenium/standalone-chrome:3.4.0'
+  ports:
+    - "4444:4444"
+e2e:
+  build: '.'
+  command: 'npm run gulp frontend-e2e'
+  links:
+    - backend
+    - webdriver
+  environment:
+    APP_SERVER: 'backend'
+    WEBDRIVER_HOST: 'webdriver'

@@ -9,7 +9,7 @@ describe("Projects", () => {
   cleanDB();
 
   it("creates a new project", async() => {
-    browser.get("http://localhost:3001");
+    browser.get(`http://${process.env.APP_SERVER}:3001`);
 
     element(by.id("new-project")).click();
     element(by.css("input[ng-reflect-name=name]")).sendKeys("Proyecto");
@@ -22,7 +22,7 @@ describe("Projects", () => {
   it("changes actual project", async() => {
     await factory.create('Project', {name: 'Proyecto'});
     await factory.create('Project', {name: 'Proyecto 2'});
-    await browser.get("http://localhost:3001/");
+    await browser.get(`http://${process.env.APP_SERVER}:3001`);
 
     const options = await $('#project-list').all(by.tagName('option'));
     options[1].click();

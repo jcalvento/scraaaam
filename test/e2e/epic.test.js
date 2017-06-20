@@ -7,7 +7,7 @@ describe("Epics", () => {
   cleanDB();
 
   beforeEach(() => {
-    browser.get("http://localhost:3001");
+    browser.get(`http://${process.env.APP_SERVER}:3001`);
   });
 
   it("creates a new epic", async() => {

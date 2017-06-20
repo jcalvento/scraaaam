@@ -12,7 +12,7 @@ describe("Tasks", () => {
 
   it("creates a new task", async() => {
     const epic = await factory.create('Epic');
-    browser.get(`http://localhost:3001/#/epics/${epic._id}`);
+    browser.get(`http://${process.env.APP_SERVER}:3001/#/epics/${epic._id}`);
 
     element(by.id("new-tarea")).click();
     element(by.css("input[ng-reflect-name=description]")).sendKeys("Task");
@@ -24,7 +24,7 @@ describe("Tasks", () => {
 
   it("removes a task", async() => {
     const epic = await factory.create('Epic');
-    browser.get(`http://localhost:3001/#/epics/${epic._id}`);
+    browser.get(`http://${process.env.APP_SERVER}:3001/#/epics/${epic._id}`);
     element(by.id("new-tarea")).click();
     element(by.css("input[ng-reflect-name=description]")).sendKeys("Task");
     await element(by.id("submit-modal")).click();

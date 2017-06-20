@@ -11,7 +11,7 @@ describe("Milestones", () => {
 
   it("creates a new milestone", async() => {
     await factory.create('Project');
-    browser.get("http://localhost:3001");
+    browser.get(`http://${process.env.APP_SERVER}:3001`);
 
     element(by.id("new-milestone")).click();
     element(by.css("input[ng-reflect-name=name]")).sendKeys("Milestone");
