@@ -1,4 +1,4 @@
-FROM node:6
+FROM node:7.10.0
 
 COPY . .
 RUN npm install

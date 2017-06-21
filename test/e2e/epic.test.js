@@ -7,6 +7,7 @@ describe("Epics", () => {
   cleanDB();
 
   beforeEach(() => {
+    browser.ignoreSynchronization = true;
     browser.get(`http://${process.env.APP_SERVER}:3001`);
   });
 
