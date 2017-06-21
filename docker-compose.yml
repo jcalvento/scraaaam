@@ -11,13 +11,14 @@ backend:
     - mongo
   environment: 
     DATABASE_URL: 'mongodb://mongo/scram'
+    SERVER_PORT: 3001
 webdriver:
   image: 'selenium/standalone-chrome:3.4.0'
   ports:
     - "4444:4444"
 e2e:
   build: '.'
-  command: 'npm run gulp frontend-e2e'
+  command: 'sh wait-for-server.sh -- npm run gulp frontend-e2e'
   links:
     - backend
     - webdriver
