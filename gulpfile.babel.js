@@ -55,9 +55,8 @@ gulp.task('frontend-components', () =>
 
 gulp.task('frontend-e2e', () => {
   gulp.src('./test/e2e/*.test.js')
-      .pipe(protractor({
-        configFile: "./protractor.conf.js",
-        args: ['--baseUrl', `http://${process.env.APP_SERVER}:3001`]
+      .pipe(protractor({ 
+        configFile: "./protractor.conf.js" 
       }))
       .on('error', function (e) {
         throw e

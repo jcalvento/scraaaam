@@ -5,10 +5,9 @@ const expect = chai.expect;
 
 describe("Epics", () => {
   cleanDB();
-
+  
   beforeEach(() => {
-    browser.ignoreSynchronization = true;
-    browser.get(`http://${process.env.APP_SERVER}:3001`);
+    browser.get(process.env.APP_SERVER);
   });
 
   it("creates a new epic", async() => {

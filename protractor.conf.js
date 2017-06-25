@@ -3,7 +3,8 @@ exports.config = {
   mochaOpts: {
     timeout: 30000,
   },
-  seleniumAddress: `http://${process.env.WEBDRIVER_HOST}:4444/wd/hub`,
+  seleniumAddress: process.env.WEBDRIVER_HOST,
+  baseUrl: process.env.APP_SERVER,
   onPrepare: function () {
     require("babel-register");
   },
