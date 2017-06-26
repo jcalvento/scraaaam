@@ -3,9 +3,10 @@ exports.config = {
   mochaOpts: {
     timeout: 30000,
   },
+  seleniumAddress: process.env.WEBDRIVER_HOST,
+  baseUrl: process.env.APP_SERVER,
   onPrepare: function () {
     require("babel-register");
   },
-  specs: ['test/e2e/*.test.js'],
-  seleniumServerJar: './node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-3.4.0.jar',
+  specs: ['test/e2e/*.test.js']
 };

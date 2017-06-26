@@ -1,13 +1,32 @@
-mongo:
-  image: mongo
-  ports:
-    - "27017:27017"
-  command: "--smallfiles --logpath=/dev/null"
-backend:
-  build: .
-  ports:
-    - "3001:3001"
-  links:
-    - mongo
-  environment: 
-    DATABASE_URL: 'mongodb://mongo/scram'
+version: '2'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27018:27017"
+    command: "--smallfiles --logpath=/dev/null"
+  backend:
+    build: '.'
+    ports:
+      - "3001:3001"
+    links:
+      - mongo
+    environment: 
+      DATABASE_URL: 'mongodb://mongo/scram'
+      SERVER_PORT: 3001
+  webdriver:
+    image: 'selenium/standalone-chrome:3.4.0'
+    ports:
+      - "4444:4444"
+    links:
+      - backend
+  e2e:
+    build: '.'
+    command: 'sh wait-for-server.sh -- npm run gulp frontend-e2e'
+    links:
+      - mongo
+      - webdriver
+    environment:
+      DATABASE_URL: 'mongodb://mongo/scram'
+      APP_SERVER: 'http://backend:3001'
+      WEBDRIVER_HOST: 'http://webdriver:4444/wd/hub/'
