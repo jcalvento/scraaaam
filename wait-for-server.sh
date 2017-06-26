@@ -10,7 +10,5 @@ until curl -f http://backend:3001; do
   sleep 1
 done
 
-sleep 6
-
 >&2 echo "Server is up - executing command"
 exec $cmd
