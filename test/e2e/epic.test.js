@@ -5,9 +5,9 @@ const expect = chai.expect;
 
 describe("Epics", () => {
   cleanDB();
-
+  
   beforeEach(() => {
-    browser.get("http://localhost:3001");
+    browser.get(process.env.APP_SERVER);
   });
 
   it("creates a new epic", async() => {
