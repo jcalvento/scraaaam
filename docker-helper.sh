@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
-docker-name() {
-  local CURRENT_BRANCH=$1
-  local DOCKER_NAME=${CURRENT_BRANCH}
-  if [ "$CURRENT_BRANCH" == "master" ]; then
+dockerName() {
+  local DOCKER_NAME=$TRAVIS_BRANCH
+  if [ "$TRAVIS_BRANCH" == "master" ]; then
     local DOCKER_NAME="stable"
-  elif [ "$CURRENT_BRANCH" == "develop" ]; then
+  elif [ "$TRAVIS_BRANCH" == "develop" ]; then
     local DOCKER_NAME="devel"
   fi;
   echo ${DOCKER_NAME}
+}
+
+pushToDocker() {
+  if [ "$TRAVIS_BRANCH" == "master" -o "$TRAVIS_BRANCH" == "develop" ]; then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push $DOCKER_USERNAME/scraaam-$(dockerName "$TRAVIS_BRANCH");
+  fi
 }
